@@ -4,24 +4,26 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { initBlog } from '@/lib/init-blog'
+import { FloatingIcons } from '@/components/floating-icons'
+import { FinanceHeader } from '@/components/finance-header'
+import { FinanceFooter } from '@/components/finance-footer'
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
-// Initialize the blog system with your GitHub repository
-// Replace these with your actual GitHub username/repo
+// Initialize the blog system
 initBlog({
-  owner: 'your-github-username', // Change this
-  repo: 'your-repo-name', // Change this
+  owner: 'your-github-username',
+  repo: 'your-repo-name',
   branch: 'main',
   blogsPath: 'public',
-  useLocalFS: true, // Set to true for local development, false for production
+  useLocalFS: true,
 });
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.app',
+  title: 'FinanceInsight | Financial Markets & Analysis',
+  description: 'Your trusted source for financial market analysis, investment strategies, and economic insights.',
+  generator: 'Next.js',
   icons: {
     icon: [
       {
@@ -47,9 +49,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`font-sans antialiased`}>
-        {children}
+    <html lang="en" className="dark">
+      <body className={`font-sans antialiased min-h-screen flex flex-col finance-grid`}>
+        <FloatingIcons />
+        <FinanceHeader />
+        <div className="pt-20 flex-1 relative z-10">
+          {children}
+        </div>
+        <FinanceFooter />
         <Analytics />
       </body>
     </html>

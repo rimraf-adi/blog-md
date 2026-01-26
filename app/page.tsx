@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { formatDate, getExcerpt, type BlogPost } from '@/lib/markdown';
-import { ArrowRight, Loader } from 'lucide-react';
+import { ArrowRight, Loader, TrendingUp, Calendar, User } from 'lucide-react';
 
 export default function HomePage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -34,21 +32,13 @@ export default function HomePage() {
 
   if (error) {
     return (
-      <main className="min-h-screen bg-background">
+      <main className="min-h-screen">
         <div className="max-w-4xl mx-auto px-4 py-16">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Blog</h1>
-            <div className="bg-destructive/10 text-destructive p-4 rounded-lg">
-              <p className="font-semibold">Configuration Required</p>
-              <p className="text-sm mt-2">{error}</p>
-              <p className="text-sm mt-4">
-                Please ensure you have:
-              </p>
-              <ul className="text-sm mt-2 space-y-1">
-                <li>1. Set your GitHub repo configuration in your app initialization</li>
-                <li>2. Created a public/blog-name/index.md file structure in your repo</li>
-                <li>3. Added YAML frontmatter with title, date, and description</li>
-              </ul>
+            <h1 className="text-4xl font-bold text-gold-gradient mb-4">Blog</h1>
+            <div className="glass-card p-6 rounded-xl">
+              <p className="font-semibold text-[#EF4444]">Configuration Required</p>
+              <p className="text-sm mt-2 text-[#94A3B8]">{error}</p>
             </div>
           </div>
         </div>
@@ -57,55 +47,96 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-4 py-16">
-        {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-foreground mb-2">Blog</h1>
-          <p className="text-muted-foreground text-lg">
-            Thoughts, stories, and ideas
+    <main className="min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 py-12">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[rgba(212,175,55,0.1)] border border-[rgba(212,175,55,0.3)] mb-6">
+            <TrendingUp className="w-4 h-4 text-[#D4AF37]" />
+            <span className="text-sm text-[#D4AF37]">Latest Market Insights</span>
+          </div>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+            <span className="text-[#F8FAFC]">Stay Ahead in</span>
+            <br />
+            <span className="text-gold-gradient">Financial Markets</span>
+          </h1>
+          <p className="text-xl text-[#94A3B8] max-w-2xl mx-auto">
+            Expert analysis, market trends, and investment strategies to help you make informed financial decisions.
           </p>
         </div>
 
         {/* Loading State */}
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader className="animate-spin text-muted-foreground" size={32} />
+            <div className="flex flex-col items-center gap-4">
+              <Loader className="animate-spin text-[#D4AF37]" size={40} />
+              <p className="text-[#94A3B8]">Loading insights...</p>
+            </div>
           </div>
         ) : posts.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-muted-foreground text-lg">No blog posts found yet.</p>
+            <div className="glass-card p-12 rounded-2xl max-w-lg mx-auto">
+              <TrendingUp className="w-16 h-16 text-[#D4AF37] mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-[#F8FAFC] mb-2">No Posts Yet</h2>
+              <p className="text-[#94A3B8]">Fresh financial insights are coming soon. Stay tuned!</p>
+            </div>
           </div>
         ) : (
           /* Blog Grid */
-          <div className="grid gap-6 md:gap-8">
-            {posts.map((post) => (
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post, index) => (
               <Link key={post.slug} href={`/blog/${post.slug}`}>
-                <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer border-border hover:border-primary/50">
-                  <CardHeader>
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <CardTitle className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
-                          {post.frontmatter.title}
-                        </CardTitle>
-                        <CardDescription className="text-muted-foreground">
-                          {formatDate(post.frontmatter.date)}
-                        </CardDescription>
+                <article
+                  className={`glass-card h-full rounded-2xl overflow-hidden group cursor-pointer ${index === 0 ? 'md:col-span-2 lg:col-span-2' : ''
+                    }`}
+                >
+                  {/* Card Header with gradient */}
+                  <div className="h-2 bg-gradient-to-r from-[#D4AF37] via-[#F4D03F] to-[#10B981]" />
+
+                  <div className="p-6">
+                    {/* Tags */}
+                    {post.frontmatter.tags && (
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {(post.frontmatter.tags as string[]).slice(0, 3).map((tag: string) => (
+                          <span
+                            key={tag}
+                            className="px-3 py-1 text-xs rounded-full bg-[rgba(212,175,55,0.1)] text-[#D4AF37] border border-[rgba(212,175,55,0.2)]"
+                          >
+                            {tag}
+                          </span>
+                        ))}
                       </div>
-                      <ArrowRight size={20} className="text-muted-foreground flex-shrink-0 mt-1" />
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-foreground leading-relaxed">
-                      {post.frontmatter.description || getExcerpt(post.content, 200)}
-                    </p>
-                    {post.frontmatter.author && (
-                      <p className="text-sm text-muted-foreground mt-4">
-                        By {post.frontmatter.author}
-                      </p>
                     )}
-                  </CardContent>
-                </Card>
+
+                    {/* Title */}
+                    <h2 className={`font-bold text-[#F8FAFC] group-hover:text-[#D4AF37] transition-colors mb-3 ${index === 0 ? 'text-2xl md:text-3xl' : 'text-xl'
+                      }`}>
+                      {post.frontmatter.title}
+                    </h2>
+
+                    {/* Description */}
+                    <p className="text-[#94A3B8] leading-relaxed mb-4">
+                      {post.frontmatter.description || getExcerpt(post.content, 150)}
+                    </p>
+
+                    {/* Meta Info */}
+                    <div className="flex items-center justify-between pt-4 border-t border-[rgba(212,175,55,0.1)]">
+                      <div className="flex items-center gap-4 text-sm text-[#64748B]">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {formatDate(post.frontmatter.date)}
+                        </span>
+                        {post.frontmatter.author && (
+                          <span className="flex items-center gap-1">
+                            <User className="w-4 h-4" />
+                            {post.frontmatter.author}
+                          </span>
+                        )}
+                      </div>
+                      <ArrowRight className="w-5 h-5 text-[#D4AF37] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    </div>
+                  </div>
+                </article>
               </Link>
             ))}
           </div>

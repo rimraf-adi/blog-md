@@ -5,8 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { formatDate, type BlogPost } from '@/lib/markdown';
 import { MarkdownRenderer } from '@/components/markdown-renderer';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, Loader } from 'lucide-react';
+import { ArrowLeft, Loader, Calendar, User, Clock, TrendingUp } from 'lucide-react';
 
 export default function BlogPostPage() {
   const params = useParams();
@@ -45,25 +44,30 @@ export default function BlogPostPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center">
-        <Loader className="animate-spin text-muted-foreground" size={32} />
+      <main className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader className="animate-spin text-[#D4AF37]" size={40} />
+          <p className="text-[#94A3B8]">Loading article...</p>
+        </div>
       </main>
     );
   }
 
   if (error || !post) {
     return (
-      <main className="min-h-screen bg-background">
+      <main className="min-h-screen">
         <div className="max-w-3xl mx-auto px-4 py-16">
-          <Link href="/">
-            <Button variant="outline" className="mb-8 bg-transparent">
-              <ArrowLeft size={16} className="mr-2" />
-              Back to Blog
-            </Button>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-[#94A3B8] hover:text-[#D4AF37] transition-colors mb-8"
+          >
+            <ArrowLeft size={16} />
+            Back to Blog
           </Link>
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-foreground mb-4">404</h1>
-            <p className="text-muted-foreground">{error || 'Blog post not found'}</p>
+          <div className="glass-card rounded-2xl p-12 text-center">
+            <TrendingUp className="w-16 h-16 text-[#D4AF37] mx-auto mb-4" />
+            <h1 className="text-3xl font-bold text-[#F8FAFC] mb-2">404</h1>
+            <p className="text-[#94A3B8]">{error || 'Blog post not found'}</p>
           </div>
         </div>
       </main>
@@ -71,51 +75,95 @@ export default function BlogPostPage() {
   }
 
   return (
-    <main className="min-h-screen bg-background">
-      <div className="max-w-3xl mx-auto px-4 py-16">
+    <main className="min-h-screen">
+      <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Back Button */}
-        <Link href="/">
-          <Button variant="outline" className="mb-8 bg-transparent">
-            <ArrowLeft size={16} className="mr-2" />
-            Back to Blog
-          </Button>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-[#94A3B8] hover:text-[#D4AF37] transition-colors mb-8"
+        >
+          <ArrowLeft size={16} />
+          Back to Blog
         </Link>
 
         {/* Article */}
-        <article className="prose prose-sm max-w-none">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-4">
+        <article className="glass-card rounded-2xl overflow-hidden">
+          {/* Header Gradient */}
+          <div className="h-2 bg-gradient-to-r from-[#D4AF37] via-[#F4D03F] to-[#10B981]" />
+
+          <div className="p-8 md:p-12">
+            {/* Tags */}
+            {post.frontmatter.tags && (
+              <div className="flex flex-wrap gap-2 mb-6">
+                {(post.frontmatter.tags as string[]).map((tag: string) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1 text-xs rounded-full bg-[rgba(212,175,55,0.1)] text-[#D4AF37] border border-[rgba(212,175,55,0.2)]"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Title */}
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#F8FAFC] mb-6 leading-tight">
               {post.frontmatter.title}
             </h1>
 
-            <div className="flex items-center gap-4 text-muted-foreground border-b border-border pb-6">
-              <time dateTime={post.frontmatter.date}>
+            {/* Meta Info */}
+            <div className="flex flex-wrap items-center gap-6 text-[#94A3B8] pb-8 border-b border-[rgba(212,175,55,0.2)]">
+              <span className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-[#D4AF37]" />
                 {formatDate(post.frontmatter.date)}
-              </time>
+              </span>
               {post.frontmatter.author && (
-                <>
-                  <span className="text-border">•</span>
-                  <span>By {post.frontmatter.author}</span>
-                </>
+                <span className="flex items-center gap-2">
+                  <User className="w-4 h-4 text-[#D4AF37]" />
+                  {post.frontmatter.author}
+                </span>
+              )}
+              {post.frontmatter.readTime && (
+                <span className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-[#D4AF37]" />
+                  {post.frontmatter.readTime}
+                </span>
               )}
             </div>
-          </div>
 
-          {/* Content */}
-          <div className="text-foreground leading-relaxed">
-            <MarkdownRenderer content={post.content} />
+            {/* Content */}
+            <div className="prose prose-lg prose-invert max-w-none mt-8
+              prose-headings:text-[#F8FAFC] prose-headings:font-bold
+              prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:text-[#D4AF37]
+              prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
+              prose-p:text-[#CBD5E1] prose-p:leading-relaxed
+              prose-a:text-[#D4AF37] prose-a:no-underline hover:prose-a:underline
+              prose-strong:text-[#F8FAFC]
+              prose-code:text-[#F4D03F] prose-code:bg-[rgba(30,58,95,0.8)] prose-code:px-2 prose-code:py-1 prose-code:rounded
+              prose-pre:bg-[rgba(10,22,40,0.8)] prose-pre:border prose-pre:border-[rgba(212,175,55,0.2)]
+              prose-blockquote:border-l-[#D4AF37] prose-blockquote:bg-[rgba(212,175,55,0.05)] prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic
+              prose-ul:text-[#CBD5E1] prose-ol:text-[#CBD5E1]
+              prose-li:marker:text-[#D4AF37]
+            ">
+              <MarkdownRenderer content={post.content} />
+            </div>
           </div>
         </article>
 
         {/* Footer */}
-        <div className="mt-16 pt-8 border-t border-border">
-          <Link href="/">
-            <Button variant="outline">
-              <ArrowLeft size={16} className="mr-2" />
-              Back to All Posts
-            </Button>
+        <div className="mt-12 pt-8 border-t border-[rgba(212,175,55,0.2)] flex items-center justify-between">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[rgba(30,58,95,0.6)] text-[#F8FAFC] hover:bg-[rgba(212,175,55,0.2)] hover:text-[#D4AF37] transition-all border border-[rgba(212,175,55,0.2)]"
+          >
+            <ArrowLeft size={16} />
+            Back to All Posts
           </Link>
+
+          <div className="flex items-center gap-2 text-[#64748B]">
+            <TrendingUp className="w-4 h-4 text-[#D4AF37]" />
+            <span className="text-sm">FinanceInsight</span>
+          </div>
         </div>
       </div>
     </main>
