@@ -9,6 +9,8 @@ readTime: "5 min read"
 
 # The Inflated Values of Gold and Silver: A Deep Dive
 
+![Gold Coins and Bars](./gold.png)
+
 In recent months, the financial world has been buzzing with the unprecedented surge in precious metal prices. Gold and silver, the age-old stores of value, are seeing their valuations climb to historic highs. But what is driving this inflation in value? Is it a bubble waiting to burst, or a reflection of deeper economic shifts?
 
 ## The Perfect Storm for Precious Metals
