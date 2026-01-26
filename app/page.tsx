@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { formatDate, getExcerpt, type BlogPost } from '@/lib/markdown';
-import { getAllBlogPosts } from '@/lib/github-blog-loader';
 import { ArrowRight, Loader } from 'lucide-react';
 
 export default function HomePage() {
@@ -16,12 +15,15 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        // Make sure to set your GitHub config before calling this
-        const blogPosts = await getAllBlogPosts();
+        const response = await fetch('/api/blogs');
+        if (!response.ok) {
+          throw new Error('Failed to fetch blog posts');
+        }
+        const blogPosts = await response.json();
         setPosts(blogPosts);
       } catch (err) {
         console.error('Failed to fetch blog posts:', err);
-        setError('Failed to load blog posts. Please check your GitHub configuration.');
+        setError('Failed to load blog posts. Please check your configuration.');
       } finally {
         setLoading(false);
       }

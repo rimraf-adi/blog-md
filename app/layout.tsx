@@ -14,7 +14,8 @@ initBlog({
   owner: 'your-github-username', // Change this
   repo: 'your-repo-name', // Change this
   branch: 'main',
-  blogsPath: 'public'
+  blogsPath: 'public',
+  useLocalFS: true, // Set to true for local development, false for production
 });
 
 export const metadata: Metadata = {

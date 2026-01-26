@@ -41,12 +41,14 @@ export interface BlogInitConfig {
   repo: string; // Repository name
   branch?: string; // Branch name (default: 'main')
   blogsPath?: string; // Path to blogs folder in repo (default: 'public')
+  useLocalFS?: boolean; // Use local filesystem instead of GitHub (default: false)
 }
 
 export function initBlog(config: BlogInitConfig) {
-  if (!config.owner || !config.repo) {
+  // Allow local filesystem mode even without owner/repo
+  if (!config.useLocalFS && (!config.owner || !config.repo)) {
     console.warn(
-      'Blog initialization failed: owner and repo are required. Check your config.'
+      'Blog initialization failed: owner and repo are required when not using local filesystem. Check your config.'
     );
     return;
   }
@@ -56,9 +58,14 @@ export function initBlog(config: BlogInitConfig) {
     repo: config.repo,
     branch: config.branch || 'main',
     blogsPath: config.blogsPath || 'public',
+    useLocalFS: config.useLocalFS || false,
   });
 
-  console.log(
-    `Blog initialized: ${config.owner}/${config.repo} (branch: ${config.branch || 'main'})`
-  );
+  if (config.useLocalFS) {
+    console.log(`Blog initialized: using local filesystem (path: ${config.blogsPath || 'public'})`);
+  } else {
+    console.log(
+      `Blog initialized: ${config.owner}/${config.repo} (branch: ${config.branch || 'main'})`
+    );
+  }
 }

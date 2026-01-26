@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { formatDate, type BlogPost } from '@/lib/markdown';
-import { getBlogPostBySlug } from '@/lib/github-blog-loader';
 import { MarkdownRenderer } from '@/components/markdown-renderer';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Loader } from 'lucide-react';
@@ -20,12 +19,17 @@ export default function BlogPostPage() {
   useEffect(() => {
     async function fetchPost() {
       try {
-        const blogPost = await getBlogPostBySlug(slug);
-        if (!blogPost) {
-          setError('Blog post not found');
-        } else {
-          setPost(blogPost);
+        const response = await fetch(`/api/blogs/${slug}`);
+        if (!response.ok) {
+          if (response.status === 404) {
+            setError('Blog post not found');
+          } else {
+            throw new Error('Failed to fetch blog post');
+          }
+          return;
         }
+        const blogPost = await response.json();
+        setPost(blogPost);
       } catch (err) {
         console.error('Failed to fetch blog post:', err);
         setError('Failed to load blog post');
