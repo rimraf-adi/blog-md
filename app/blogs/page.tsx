@@ -51,7 +51,8 @@ export default function BlogsPage() {
             try {
                 const response = await fetch('/api/blogs');
                 const data = await response.json();
-                setPosts(data.posts || []);
+                // API returns array directly, not {posts: [...]}
+                setPosts(Array.isArray(data) ? data : data.posts || []);
             } catch (error) {
                 console.error('Failed to fetch posts:', error);
             } finally {
@@ -106,23 +107,24 @@ export default function BlogsPage() {
                         </div>
                     </div>
                 ) : (
-                    /* Bento Grid - Fixed Heights */
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
+                    /* Bento Grid - Uniform Heights */
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {posts.map((post, index) => {
-                            // Bento grid pattern: first card is larger
+                            // Bento grid pattern: first card spans 2 columns
                             const isLarge = index === 0;
                             const cardClasses = isLarge
-                                ? 'md:col-span-2 lg:col-span-2 md:row-span-2'
+                                ? 'md:col-span-2 lg:col-span-2'
                                 : '';
 
                             return (
                                 <Link key={post.slug} href={`/blog/${post.slug}`}>
                                     <article
-                                        className={`glass-card h-full rounded-2xl overflow-hidden group cursor-pointer flex flex-col ${cardClasses}`}
+                                        className={`glass-card rounded-2xl overflow-hidden group cursor-pointer flex flex-col ${cardClasses}`}
+                                        style={{ minHeight: isLarge ? '420px' : '380px' }}
                                     >
                                         {/* Thumbnail with fixed aspect ratio */}
                                         {post.frontmatter.thumbnail ? (
-                                            <div className={`relative overflow-hidden ${isLarge ? 'aspect-[16/9]' : 'aspect-[16/10]'}`}>
+                                            <div className="relative overflow-hidden h-48">
                                                 <img
                                                     src={post.frontmatter.thumbnail}
                                                     alt={post.frontmatter.title}
@@ -138,7 +140,7 @@ export default function BlogsPage() {
                                         <div className="p-6 flex flex-col flex-grow">
                                             {/* Tags */}
                                             {post.frontmatter.tags && (
-                                                <div className="flex flex-wrap gap-2 mb-4">
+                                                <div className="flex flex-wrap gap-2 mb-3">
                                                     {(post.frontmatter.tags as string[]).slice(0, 3).map((tag: string) => (
                                                         <span
                                                             key={tag}
@@ -151,32 +153,30 @@ export default function BlogsPage() {
                                             )}
 
                                             {/* Title */}
-                                            <h2 className={`font-bold text-[#111827] group-hover:text-[#059669] transition-colors mb-3 ${isLarge ? 'text-2xl md:text-3xl' : 'text-lg'}`}>
+                                            <h2 className={`font-bold text-[#111827] group-hover:text-[#059669] transition-colors mb-2 line-clamp-2 ${isLarge ? 'text-xl md:text-2xl' : 'text-lg'}`}>
                                                 {post.frontmatter.title}
                                             </h2>
 
-                                            {/* Description - only show for large card or if no thumbnail */}
-                                            {(isLarge || !post.frontmatter.thumbnail) && (
-                                                <p className="text-[#4B5563] leading-relaxed mb-4 flex-grow">
-                                                    {post.frontmatter.description || getExcerpt(post.content, isLarge ? 200 : 120)}
-                                                </p>
-                                            )}
+                                            {/* Description - show on all cards for uniformity */}
+                                            <p className="text-[#4B5563] text-sm leading-relaxed mb-4 flex-grow line-clamp-3">
+                                                {post.frontmatter.description || getExcerpt(post.content, 120)}
+                                            </p>
 
                                             {/* Meta Info - pushed to bottom */}
-                                            <div className="flex items-center justify-between pt-4 border-t border-[rgba(5,150,105,0.1)] mt-auto">
-                                                <div className="flex items-center gap-4 text-sm text-[#6B7280]">
+                                            <div className="flex items-center justify-between pt-3 border-t border-[rgba(5,150,105,0.1)] mt-auto">
+                                                <div className="flex items-center gap-3 text-xs text-[#6B7280]">
                                                     <span className="flex items-center gap-1">
-                                                        <Calendar className="w-4 h-4" />
+                                                        <Calendar className="w-3.5 h-3.5" />
                                                         {formatDate(post.frontmatter.date)}
                                                     </span>
                                                     {post.frontmatter.author && (
                                                         <span className="flex items-center gap-1">
-                                                            <User className="w-4 h-4" />
+                                                            <User className="w-3.5 h-3.5" />
                                                             {post.frontmatter.author}
                                                         </span>
                                                     )}
                                                 </div>
-                                                <ArrowRight className="w-5 h-5 text-[#059669] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                                                <ArrowRight className="w-4 h-4 text-[#059669] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                                             </div>
                                         </div>
                                     </article>
