@@ -17,11 +17,12 @@ interface FloatingIcon {
 
 const ICONS = ['$', '₹', '%', '+', '−', '📊', '📈', '💰', '🧮', '÷', '×', '¢'];
 
-const ICON_COUNT = 15;
-const REPEL_RADIUS = 150;
-const REPEL_FORCE = 8;
-const FRICTION = 0.95;
-const BASE_VELOCITY = 0.3;
+// Organic feel: fewer icons, more variation
+const ICON_COUNT = 11;
+const REPEL_RADIUS = 130;
+const REPEL_FORCE = 6;
+const FRICTION = 0.94;
+const BASE_VELOCITY = 0.25;
 
 export function FloatingIcons() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -41,10 +42,12 @@ export function FloatingIcons() {
                 vx: (Math.random() - 0.5) * BASE_VELOCITY,
                 vy: (Math.random() - 0.5) * BASE_VELOCITY,
                 icon: ICONS[Math.floor(Math.random() * ICONS.length)],
-                size: 20 + Math.random() * 24,
-                opacity: 0.15 + Math.random() * 0.25,
+                // More varied sizes for organic feel
+                size: 16 + Math.random() * 32,
+                // More varied opacity - some barely visible, some more prominent
+                opacity: 0.08 + Math.random() * 0.28,
                 rotation: Math.random() * 360,
-                rotationSpeed: (Math.random() - 0.5) * 0.5,
+                rotationSpeed: (Math.random() - 0.5) * 0.4,
             });
         }
         setIcons(initIcons);
@@ -165,8 +168,8 @@ export function FloatingIcons() {
                         fontSize: icon.size,
                         opacity: icon.opacity,
                         transform: `translate(-50%, -50%) rotate(${icon.rotation}deg)`,
-                        color: '#D4AF37',
-                        textShadow: '0 0 20px rgba(212, 175, 55, 0.5)',
+                        color: '#059669',
+                        textShadow: '0 0 20px rgba(5, 150, 105, 0.4)',
                         willChange: 'transform, left, top',
                     }}
                 >

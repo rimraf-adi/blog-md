@@ -1,158 +1,121 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { formatDate, getExcerpt, type BlogPost } from '@/lib/markdown';
-import { ArrowRight, Loader, TrendingUp, Calendar, User } from 'lucide-react';
+import { TrendingUp, ArrowRight, BookOpen, Users, Target, Zap } from 'lucide-react';
 
-export default function HomePage() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const response = await fetch('/api/blogs');
-        if (!response.ok) {
-          throw new Error('Failed to fetch blog posts');
-        }
-        const blogPosts = await response.json();
-        setPosts(blogPosts);
-      } catch (err) {
-        console.error('Failed to fetch blog posts:', err);
-        setError('Failed to load blog posts. Please check your configuration.');
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchPosts();
-  }, []);
-
-  if (error) {
-    return (
-      <main className="min-h-screen">
-        <div className="max-w-4xl mx-auto px-4 py-16">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-gold-gradient mb-4">Blog</h1>
-            <div className="glass-card p-6 rounded-xl">
-              <p className="font-semibold text-[#EF4444]">Configuration Required</p>
-              <p className="text-sm mt-2 text-[#94A3B8]">{error}</p>
-            </div>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
+export default function Home() {
   return (
     <main className="min-h-screen">
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[rgba(212,175,55,0.1)] border border-[rgba(212,175,55,0.3)] mb-6">
-            <TrendingUp className="w-4 h-4 text-[#D4AF37]" />
-            <span className="text-sm text-[#D4AF37]">Latest Market Insights</span>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">
-            <span className="text-[#F8FAFC]">Stay Ahead in</span>
-            <br />
-            <span className="text-gold-gradient">Financial Markets</span>
-          </h1>
-          <p className="text-xl text-[#94A3B8] max-w-2xl mx-auto">
-            Expert analysis, market trends, and investment strategies to help you make informed financial decisions.
-          </p>
+      {/* Hero Section */}
+      <section className="max-w-6xl mx-auto px-4 py-20 text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[rgba(5,150,105,0.08)] border border-[rgba(5,150,105,0.2)] mb-6">
+          <TrendingUp className="w-4 h-4 text-[#059669]" />
+          <span className="text-sm text-[#059669]">Expert Financial Insights</span>
         </div>
+        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
+          <span className="text-[#111827]">Navigate the</span>
+          <br />
+          <span className="text-gold-gradient">Financial Markets</span>
+        </h1>
+        <p className="text-xl text-[#4B5563] max-w-2xl mx-auto mb-10">
+          Expert analysis, market trends, and investment strategies to help you make informed financial decisions in today's dynamic markets.
+        </p>
+        <div className="flex flex-wrap gap-4 justify-center">
+          <Link
+            href="/blogs"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#059669] to-[#10B981] text-white font-semibold hover:shadow-[0_0_28px_rgba(5,150,105,0.35)] transition-all"
+          >
+            <BookOpen className="w-5 h-5" />
+            Read Articles
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+          <Link
+            href="#about"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[rgba(5,150,105,0.08)] text-[#059669] font-semibold border border-[rgba(5,150,105,0.2)] hover:bg-[rgba(5,150,105,0.15)] transition-all"
+          >
+            Learn More
+          </Link>
+        </div>
+      </section>
 
-        {/* Loading State */}
-        {loading ? (
-          <div className="flex items-center justify-center py-16">
-            <div className="flex flex-col items-center gap-4">
-              <Loader className="animate-spin text-[#D4AF37]" size={40} />
-              <p className="text-[#94A3B8]">Loading insights...</p>
+      {/* Features Section */}
+      <section className="max-w-6xl mx-auto px-4 py-16">
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="glass-card p-8 rounded-2xl text-center">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#059669] to-[#10B981] flex items-center justify-center mx-auto mb-4">
+              <Target className="w-7 h-7 text-white" />
+            </div>
+            <h3 className="text-xl font-bold text-[#111827] mb-3">Market Analysis</h3>
+            <p className="text-[#4B5563]">In-depth analysis of market trends, patterns, and opportunities to inform your investment decisions.</p>
+          </div>
+          <div className="glass-card p-8 rounded-2xl text-center">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#059669] to-[#10B981] flex items-center justify-center mx-auto mb-4">
+              <Zap className="w-7 h-7 text-white" />
+            </div>
+            <h3 className="text-xl font-bold text-[#111827] mb-3">Real-Time Updates</h3>
+            <p className="text-[#4B5563]">Stay ahead with timely insights on market movements and economic developments.</p>
+          </div>
+          <div className="glass-card p-8 rounded-2xl text-center">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#059669] to-[#10B981] flex items-center justify-center mx-auto mb-4">
+              <Users className="w-7 h-7 text-white" />
+            </div>
+            <h3 className="text-xl font-bold text-[#111827] mb-3">Expert Community</h3>
+            <p className="text-[#4B5563]">Join a community of traders and investors sharing knowledge and strategies.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="max-w-6xl mx-auto px-4 py-20">
+        <div className="glass-card rounded-3xl p-12 md:p-16">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="text-sm font-semibold text-[#059669] uppercase tracking-wider mb-4 block">About Us</span>
+              <h2 className="text-4xl font-bold text-[#111827] mb-6">Your Trusted Financial Partner</h2>
+              <p className="text-[#4B5563] mb-6 leading-relaxed">
+                FinanceInsight is dedicated to democratizing financial knowledge. We believe everyone deserves access to quality market analysis and investment education.
+              </p>
+              <p className="text-[#4B5563] mb-8 leading-relaxed">
+                Our team of experienced analysts and finance professionals bring you insights that were once reserved for institutional investors.
+              </p>
+              <div className="flex gap-8">
+                <div>
+                  <div className="text-3xl font-bold text-[#059669]">500+</div>
+                  <div className="text-sm text-[#6B7280]">Articles Published</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-[#059669]">50K+</div>
+                  <div className="text-sm text-[#6B7280]">Monthly Readers</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-[#059669]">10+</div>
+                  <div className="text-sm text-[#6B7280]">Expert Writers</div>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="aspect-square rounded-2xl bg-gradient-to-br from-[#059669]/20 to-[#10B981]/10 flex items-center justify-center">
+                <TrendingUp className="w-32 h-32 text-[#059669] opacity-30" />
+              </div>
             </div>
           </div>
-        ) : posts.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="glass-card p-12 rounded-2xl max-w-lg mx-auto">
-              <TrendingUp className="w-16 h-16 text-[#D4AF37] mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-[#F8FAFC] mb-2">No Posts Yet</h2>
-              <p className="text-[#94A3B8]">Fresh financial insights are coming soon. Stay tuned!</p>
-            </div>
-          </div>
-        ) : (
-          /* Blog Grid */
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post, index) => (
-              <Link key={post.slug} href={`/blog/${post.slug}`}>
-                <article
-                  className={`glass-card h-full rounded-2xl overflow-hidden group cursor-pointer ${index === 0 ? 'md:col-span-2 lg:col-span-2' : ''
-                    }`}
-                >
-                  {/* Thumbnail or Gradient Header */}
-                  {post.frontmatter.thumbnail ? (
-                    <div className={`relative overflow-hidden ${index === 0 ? 'h-48 md:h-64' : 'h-40'}`}>
-                      <img
-                        src={post.frontmatter.thumbnail}
-                        alt={post.frontmatter.title}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,22,40,0.8)] to-transparent" />
-                    </div>
-                  ) : (
-                    <div className="h-2 bg-gradient-to-r from-[#D4AF37] via-[#F4D03F] to-[#10B981]" />
-                  )}
+        </div>
+      </section>
 
-                  <div className="p-6">
-                    {/* Tags */}
-                    {post.frontmatter.tags && (
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {(post.frontmatter.tags as string[]).slice(0, 3).map((tag: string) => (
-                          <span
-                            key={tag}
-                            className="px-3 py-1 text-xs rounded-full bg-[rgba(212,175,55,0.1)] text-[#D4AF37] border border-[rgba(212,175,55,0.2)]"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Title */}
-                    <h2 className={`font-bold text-[#F8FAFC] group-hover:text-[#D4AF37] transition-colors mb-3 ${index === 0 ? 'text-2xl md:text-3xl' : 'text-xl'
-                      }`}>
-                      {post.frontmatter.title}
-                    </h2>
-
-                    {/* Description */}
-                    <p className="text-[#94A3B8] leading-relaxed mb-4">
-                      {post.frontmatter.description || getExcerpt(post.content, 150)}
-                    </p>
-
-                    {/* Meta Info */}
-                    <div className="flex items-center justify-between pt-4 border-t border-[rgba(212,175,55,0.1)]">
-                      <div className="flex items-center gap-4 text-sm text-[#64748B]">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {formatDate(post.frontmatter.date)}
-                        </span>
-                        {post.frontmatter.author && (
-                          <span className="flex items-center gap-1">
-                            <User className="w-4 h-4" />
-                            {post.frontmatter.author}
-                          </span>
-                        )}
-                      </div>
-                      <ArrowRight className="w-5 h-5 text-[#D4AF37] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </div>
-                  </div>
-                </article>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
+      {/* CTA Section */}
+      <section className="max-w-6xl mx-auto px-4 py-16 text-center">
+        <h2 className="text-3xl font-bold text-[#111827] mb-4">Ready to Start Your Financial Journey?</h2>
+        <p className="text-[#4B5563] mb-8 max-w-xl mx-auto">
+          Explore our latest articles and stay informed about market trends.
+        </p>
+        <Link
+          href="/blogs"
+          className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#059669] to-[#10B981] text-white font-semibold hover:shadow-[0_0_28px_rgba(5,150,105,0.35)] transition-all"
+        >
+          Browse All Articles
+          <ArrowRight className="w-4 h-4" />
+        </Link>
+      </section>
     </main>
   );
 }

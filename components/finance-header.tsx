@@ -10,12 +10,12 @@ export function FinanceHeader() {
                 <nav className="flex items-center justify-between">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-3 group">
-                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#D4AF37] to-[#F4D03F] flex items-center justify-center shadow-lg group-hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] transition-shadow">
-                            <TrendingUp className="w-6 h-6 text-[#0A1628]" />
+                        <div className="w-10 h-10 rounded-[11px] bg-gradient-to-br from-[#059669] to-[#10B981] flex items-center justify-center shadow-lg group-hover:shadow-[0_0_24px_rgba(5,150,105,0.4)] transition-all duration-400 ease-out">
+                            <TrendingUp className="w-6 h-6 text-white" />
                         </div>
                         <div>
                             <h1 className="text-xl font-bold text-gold-gradient">FinanceInsight</h1>
-                            <p className="text-xs text-[#94A3B8]">Financial Markets & Analysis</p>
+                            <p className="text-xs text-[#6B7280] tracking-wide">Financial Markets & Analysis</p>
                         </div>
                     </Link>
 
@@ -23,25 +23,19 @@ export function FinanceHeader() {
                     <div className="hidden md:flex items-center gap-8">
                         <Link
                             href="/"
-                            className="text-[#F8FAFC] hover:text-[#D4AF37] transition-colors font-medium"
+                            className="text-[#111827] hover:text-[#059669] transition-colors font-medium"
                         >
                             Home
                         </Link>
                         <Link
-                            href="/"
-                            className="text-[#94A3B8] hover:text-[#D4AF37] transition-colors"
+                            href="/blogs"
+                            className="text-[#4B5563] hover:text-[#059669] transition-colors"
                         >
-                            Markets
+                            Blogs
                         </Link>
                         <Link
-                            href="/"
-                            className="text-[#94A3B8] hover:text-[#D4AF37] transition-colors"
-                        >
-                            Analysis
-                        </Link>
-                        <Link
-                            href="/"
-                            className="text-[#94A3B8] hover:text-[#D4AF37] transition-colors"
+                            href="/#about"
+                            className="text-[#4B5563] hover:text-[#059669] transition-colors"
                         >
                             About
                         </Link>
@@ -49,10 +43,10 @@ export function FinanceHeader() {
 
                     {/* CTA Button */}
                     <Link
-                        href="/"
-                        className="hidden sm:block px-4 py-2 rounded-lg bg-gradient-to-r from-[#D4AF37] to-[#F4D03F] text-[#0A1628] font-semibold hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] transition-all"
+                        href="/blogs"
+                        className="hidden sm:block px-5 py-2.5 rounded-[10px] bg-gradient-to-r from-[#059669] via-[#10B981] to-[#059669] text-white font-semibold hover:shadow-[0_0_28px_rgba(5,150,105,0.35)] transition-all duration-400 ease-out"
                     >
-                        Subscribe
+                        Read Articles
                     </Link>
                 </nav>
             </div>
