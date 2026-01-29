@@ -145,7 +145,7 @@ export default function BlogPostPage() {
               prose-ul:text-[#CBD5E1] prose-ol:text-[#CBD5E1]
               prose-li:marker:text-[#D4AF37]
             ">
-              <MarkdownRenderer content={post.content} />
+              <MarkdownRenderer content={post.content} slug={slug} />
             </div>
           </div>
         </article>

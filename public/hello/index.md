@@ -5,9 +5,12 @@ description: "Exploring the economic drivers behind the surge in precious metal 
 author: "Aditya Kinjawadekar"
 tags: ["finance", "economy", "gold", "silver", "investing"]
 readTime: "5 min read"
+thumbnail: "/hello/stock.png"
 ---
 
 # Test blog 12345
+
+![Stock Trading](./stock.png)
 
 In recent months, the financial world has been buzzing with the unprecedented surge in precious metal prices. Gold and silver, the age-old stores of value, are seeing their valuations climb to historic highs. But what is driving this inflation in value? Is it a bubble waiting to burst, or a reflection of deeper economic shifts?
 

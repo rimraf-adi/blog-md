@@ -2,16 +2,31 @@ import React from 'react';
 
 interface MarkdownRendererProps {
   content: string;
+  slug?: string; // Blog slug for resolving relative image paths
 }
 
 /**
  * Simple markdown to HTML renderer
- * Handles: headings, paragraphs, links, bold, italic, code blocks, lists, blockquotes
+ * Handles: headings, paragraphs, links, bold, italic, code blocks, lists, blockquotes, images
  */
-export function MarkdownRenderer({ content }: MarkdownRendererProps) {
+export function MarkdownRenderer({ content, slug }: MarkdownRendererProps) {
   const lines = content.split('\n');
   const elements: React.ReactNode[] = [];
   let i = 0;
+
+  // Helper function to resolve image paths
+  const resolveImagePath = (src: string): string => {
+    // If already absolute or external URL, return as-is
+    if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('/')) {
+      return src;
+    }
+    // For relative paths like ./image.png or image.png, resolve using slug
+    if (slug) {
+      const cleanSrc = src.replace(/^\.\//, ''); // Remove leading ./
+      return `/${slug}/${cleanSrc}`;
+    }
+    return src;
+  };
 
   while (i < lines.length) {
     const line = lines[i];
@@ -19,6 +34,30 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
 
     // Empty line
     if (!trimmed) {
+      i++;
+      continue;
+    }
+
+    // Image: ![alt](src)
+    const imageMatch = trimmed.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (imageMatch) {
+      const alt = imageMatch[1];
+      const src = resolveImagePath(imageMatch[2]);
+      elements.push(
+        <figure key={i} className="my-6">
+          <img
+            src={src}
+            alt={alt}
+            className="rounded-lg max-w-full h-auto mx-auto border border-[rgba(212,175,55,0.2)]"
+            loading="lazy"
+          />
+          {alt && (
+            <figcaption className="text-center text-sm text-[#94A3B8] mt-2">
+              {alt}
+            </figcaption>
+          )}
+        </figure>
+      );
       i++;
       continue;
     }

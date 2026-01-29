@@ -5,6 +5,7 @@ description: "Exploring the economic drivers behind the surge in precious metal 
 author: "Aditya Kinjawadekar"
 tags: ["finance", "economy", "gold", "silver", "investing"]
 readTime: "5 min read"
+thumbnail: "/gold-silver-inflation/gold.png"
 ---
 
 # The Inflated Values of Gold and Silver: A Deep Dive

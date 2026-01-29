@@ -90,8 +90,19 @@ export default function HomePage() {
                   className={`glass-card h-full rounded-2xl overflow-hidden group cursor-pointer ${index === 0 ? 'md:col-span-2 lg:col-span-2' : ''
                     }`}
                 >
-                  {/* Card Header with gradient */}
-                  <div className="h-2 bg-gradient-to-r from-[#D4AF37] via-[#F4D03F] to-[#10B981]" />
+                  {/* Thumbnail or Gradient Header */}
+                  {post.frontmatter.thumbnail ? (
+                    <div className={`relative overflow-hidden ${index === 0 ? 'h-48 md:h-64' : 'h-40'}`}>
+                      <img
+                        src={post.frontmatter.thumbnail}
+                        alt={post.frontmatter.title}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,22,40,0.8)] to-transparent" />
+                    </div>
+                  ) : (
+                    <div className="h-2 bg-gradient-to-r from-[#D4AF37] via-[#F4D03F] to-[#10B981]" />
+                  )}
 
                   <div className="p-6">
                     {/* Tags */}
